@@ -6,11 +6,8 @@ import pytest
 def tester():
     return app.test_client()
 
-@pytest.mark.parametrize('route', [
-    ('/docs', 200),
-    ])
-def test_public_get_status_ok(tester, route):
-    res = tester.get('/',content_type='html/text')
+def test_docs(tester):
+    res = tester.get('/docs', content_type='application/json')
     assert res.status_code == 200
 
 if __name__ == '__main__':
