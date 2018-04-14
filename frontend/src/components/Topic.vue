@@ -28,6 +28,7 @@
       <ul>
         <li v-for="annotation in viewedAnnotations" :key="annotation.id">
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?</p>
+          <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg"/></div>
         </li>
       </ul>
     </div>
@@ -209,4 +210,20 @@ export default {
   }
 }
 
+.lbutton {
+    width: 40px;
+    height: 40px;
+    background-color: #dddddd;
+    border-radius: 20%;
+    transition: 0.05s linear;
+}
+
+.lbutton:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.lbutton:active {
+  transform: scale(0.8, 0.8);
+}
 </style>
