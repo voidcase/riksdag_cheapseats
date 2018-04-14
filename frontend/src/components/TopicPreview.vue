@@ -7,8 +7,8 @@
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia ipsam tempora corrupti ea harum fugit at nihil, odio nulla earum laudantium in natus doloribus maxime vitae a praesentium similique suscipit
     </p>
     <div>
-      <span class="button primary">Läs mer</span>
-      <span class="button secondary">Relaterade</span>
+      <router-link to="/doc/1" class="button primary">Läs mer</router-link>
+      <router-link to="/doc/2" class="button secondary">Relaterade</router-link>
     </div>
   </div>
 </template>

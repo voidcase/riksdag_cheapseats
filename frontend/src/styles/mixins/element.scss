@@ -16,10 +16,13 @@
   background: mcolor('blue', '400');
   color: #fff;
   text-shadow: 0 0 4px rgba(0,0,0,0.1);
+  text-decoration: none;
 }
 
 @mixin button-secondary() {
   @include button-base();
   border: none;
   background: mcolor('yellow', '200');
+  color: #333;
+  text-decoration: none;
 }
