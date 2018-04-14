@@ -27,7 +27,8 @@ def test_ins_ann(tester, pop_db):
     mock = {"start_paragraph": 5,
             "start_index": 10,
             "end_paragraph": 7,
-            "end_index": 12}
+            "end_index": 12,
+            "body": "No this is wrong!"}
 
     res = tester.post("/annotations/1", data=json.dumps(mock), content_type="application/json")
     assert res.status_code == 200
@@ -36,7 +37,7 @@ def test_ins_ann(tester, pop_db):
 def test_ins_com(tester, pop_db):
     mock = {"comment": "Funniest shit i've ever seen"}
 
-    res = tester.post("/annotations/1/1", data=json.dumps(mock), content_type="application/json")
+    res = tester.post("/annotations/comment/1", data=json.dumps(mock), content_type="application/json")
     assert res.status_code == 200
 
 
