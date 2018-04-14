@@ -1,30 +1,30 @@
 from flask import jsonify, Blueprint
-from models import Document
+from models import Topic
 from peewee import DoesNotExist
 from playhouse.shortcuts import model_to_dict
 
 
-documents = Blueprint('docs', __name__)
+topics_bp = Blueprint('topics', __name__)
 
 
-@documents.route('/docs')
-def docs():
-    return jsonify({'docs': [
+@topics_bp.route('/topics')
+def topics():
+    return jsonify({'topic': [
         {
             k:v
             for k,v
             in model_to_dict(doc).items()
             if k in ['id', 'title']
             }
-        for doc in Document.select() 
+        for doc in Topic.select() 
         ]})
 
 
-@documents.route('/doc/<docid>')
-def doc(docid):
+@topics_bp.route('/topic/<topic_id>')
+def topic(topic_id):
     try:
         return jsonify({
-                'doc' : model_to_dict(Document.get_by_id(docid))
+                'doc' : model_to_dict(Topic.get_by_id(topic_id))
             })
     except DoesNotExist:
         return jsonify({

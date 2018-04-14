@@ -17,7 +17,7 @@ class Debate(BaseModel):
     title = pw.CharField(max_length=140)
     summary = pw.TextField()
 
-class Speech(Document):
+class Speech(Topic):
     person = pw.CharField(max_length=140)
     debate_id = pw.ForeignKeyField(Debate)
     nr = pw.IntegerField()
@@ -31,3 +31,23 @@ class Annotation(BaseModel):
     end_index = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
+
+class Comment(BaseModel):
+    # automagic id integer field
+    parent = pw.ForeignKeyField(Annotation, backref='comments')
+    body = pw.TextField()
+
+all_tables = [Topic, Debate, Speech, Annotation, Comment]
+
+def reset():
+    db.drop_tables(all_tables)
+    db.create_tables(all_tables)
+
+def reset_and_populate():
+    reset()
+    db.drop_tables(all_tables)
+    db.create_tables(all_tables)
+    t1 = Topic.create(title='Dont drink water', body='Fish fuck in it.')
+    t2 = Topic.create(title='SPIDERS!', body='AAAAAAAAAAAAAAAAAAAHHHHHHH!!!!!!!!!!!')
+    a1 = Annotation.create(parent=t2, start_index=0, end_index=0, body='Daddy longlegs are not actually spiders')
+    c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs')
