@@ -1,7 +1,8 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, abort
 from sys import stderr
 import json
 from models import Annotation, Comment
+from peewee import IntegrityError
 
 
 annotations_bp = Blueprint('annotations', __name__)
@@ -13,6 +14,9 @@ def ins_ann(topic_id):
     Request Includes annotations and corresponding text.
 
     Should insert annotation.
+
+    params:
+
     """
     try:
         data = json.loads(request.data)
@@ -26,6 +30,8 @@ def ins_ann(topic_id):
     except json.JSONDecodeError as e:
         stderr.write("Unable to parse JSON request from /annotations/ \
                       reason: {}".format(str(e)))
+    except IntegrityError as e:
+        abort(400)
 
     """Do something with annotations."""
     return Response("Hi", status=200, mimetype="text/plain")

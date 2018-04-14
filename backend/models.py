@@ -12,12 +12,20 @@ class BaseModel(pw.Model):
 
 class Topic(BaseModel):
     # automagic id integer field
+    title = pw.CharField(max_length=140)
     body = pw.TextField()
+
+
+class Motions(BaseModel):
+    title = pw.CharField(max_length=140)
+    body = pw.TextField()
+
 
 class Debate(BaseModel):
     id = pw.CharField(primary_key=True)
     title = pw.CharField(max_length=140)
     summary = pw.TextField()
+
 
 class Speech(Topic):
     person = pw.CharField(max_length=140)
@@ -26,14 +34,18 @@ class Speech(Topic):
     party = pw.CharField(max_length=4)
     body = pw.TextField()
 
+
 class Annotation(BaseModel):
     # automagic id integer field
     start_index = pw.IntegerField()
     end_index = pw.IntegerField()
+    start_paragraph = pw.IntegerField()
+    end_paragraph = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
     timestamp = pw.DateTimeField(default=datetime.datetime.now)
     deltas = pw.IntegerField()
+
 
 class Comment(BaseModel):
     # automagic id integer field
@@ -44,9 +56,11 @@ class Comment(BaseModel):
 
 all_tables = [Topic, Debate, Speech, Annotation, Comment]
 
+
 def reset():
     db.drop_tables(all_tables)
     db.create_tables(all_tables)
+
 
 def reset_and_populate():
     reset()
@@ -58,3 +72,21 @@ def reset_and_populate():
     c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs', deltas=0)
     s1 = Speech.create(person='Kim Jong Un', debate_id='XXX', nr=1, party='R', body='A frightened dog barks louder.')
     d1 = Debate(title='Kim Jong Un vs Donald Trump', summary='Kim Jong un replies')
+
+    m1 = open("mock/m1", "r").read()
+    m1t = open("mock/m1t", "r").read()
+
+    m2 = open("mock/m2", "r").read()
+    m2t = open("mock/m2t", "r").read()
+
+    m3 = open("mock/m3", "r").read()
+    m3t = open("mock/m3t", "r").read()
+
+    Motions.create(title=m1t, text=m1)
+    Motions.create(title=m2t, text=m2)
+    Motions.create(title=m3t, text=m3)
+
+
+
+
+

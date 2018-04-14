@@ -2,7 +2,7 @@ import requests
 from json import dumps
 from sys import stderr
 
-NLP = "192.168.43.84"
+NLP = "https://summarize-h4s.herokuapp.com/summarize/"
 
 
 def summarize(text):
@@ -10,7 +10,7 @@ def summarize(text):
     response = requests.post(NLP, data=text)
 
     if response.status_code == 200:
-        return response.data
+        return response.text
     else:
         stderr.write("NLP Api sux, can't even respond properly, \
                       status_code: {}".format(str(response.status_code)))
@@ -18,4 +18,4 @@ def summarize(text):
     return None
 
 
-summarize("HELLO")
+print(summarize("HELLO"))
