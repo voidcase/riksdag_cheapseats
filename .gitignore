@@ -1,4 +1,9 @@
+.DS_Store
 *.db
 backend/.pytest_cache/
 backend/__pycache__/
+frontend/node_modules/
+/dist/
+npm-debug.log*
+/test/unit/coverage
 *.pyc

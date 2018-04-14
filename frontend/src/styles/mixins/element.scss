@@ -1,0 +1,25 @@
+@import '@/styles/material/color.scss';
+
+@mixin button-base() {
+  border-radius: 500px;
+  font-weight: 500;
+  border: 2px solid #555;
+  padding: 0.75em 1.5em;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+@mixin button-primary() {
+  @include button-base();
+  border: none;
+  border-color: mcolor('blue', '600');
+  background: mcolor('blue', '400');
+  color: #fff;
+  text-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+@mixin button-secondary() {
+  @include button-base();
+  border: none;
+  background: mcolor('yellow', '200');
+}

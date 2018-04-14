@@ -1,0 +1,8 @@
+
+@mixin contained() {
+  max-width: 1100px;
+  $hpadding: 30px;
+  padding-left: $hpadding;
+  padding-right: $hpadding;
+  margin: auto;
+}
