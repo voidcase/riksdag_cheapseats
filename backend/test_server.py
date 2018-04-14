@@ -7,14 +7,49 @@ import json
 def tester():
     return app.test_client()
 
-def test_docs(tester):
-    res = tester.get('/docs', content_type='application/json')
+@pytest.fixture
+def pop_db():
+    from models import reset_and_populate
+    reset_and_populate()
+
+def test_topics(tester, pop_db):
+    res = tester.get('/topics', content_type='application/json')
     assert res.status_code == 200
 
-def test_doc(tester):
-    res = tester.get('/doc/1', content_type='application/json')
+
+def test_topic(tester, pop_db):
+    res = tester.get('/topic/1', content_type='application/json')
     assert res.status_code == 200
     assert "error" not in json.loads(res.data)
+
+
+def test_ins_ann(tester, pop_db):
+    mock = {"start_paragraph": 5,
+            "start_index": 10,
+            "end_paragraph": 7,
+            "end_index": 12}
+
+    res = tester.post("/annotations/1", data=json.dumps(mock), content_type="application/json")
+    assert res.status_code == 200
+
+
+def test_ins_com(tester, pop_db):
+    mock = {"comment": "Funniest shit i've ever seen"}
+
+    res = tester.post("/annotations/1/1", data=json.dumps(mock), content_type="application/json")
+    assert res.status_code == 200
+
+
+def test_get_ann_meta(tester, pop_db):
+    res = tester.get("/annotations/1")
+
+    assert res.status_code == 200
+
+
+def test_get_ann_text(tester, pop_db):
+    res = tester.get("/annotations/1/1")
+
+    assert res.status_code == 200
 
 if __name__ == '__main__':
     app.run(debug=True)
