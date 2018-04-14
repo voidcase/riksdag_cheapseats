@@ -1,10 +1,10 @@
 
 <template>
   <div class="topic-preview">
-    <h3>Utbildning & Försvar &mdash; hur går det ihop?</h3>
-    <div class="author">Jonas Axelsson</div>
+    <h3>Lag (1973:1152) om förmånsrätt för fordringar enligt lagen (1973:1150) om förvaltning av samfälligheter </h3>
+    <div class="author">Justitiedepartementet L1</div>
     <p>
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia ipsam tempora corrupti ea harum fugit at nihil, odio nulla earum laudantium in natus doloribus maxime vitae a praesentium similique suscipit
+    Lagen om skydd av samfälligheter för konsumenter träder i kraft snart.
     </p>
     <div class="buttons">
       <router-link to="/doc/1" class="button primary">Läs mer</router-link>

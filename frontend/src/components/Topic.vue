@@ -56,8 +56,7 @@ export default {
       author: 'Jonas Axelsson',
       text: {
         paragraphs: [
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, provident ab sequi id delectus fugit temporibus quaerat minus praesentium, minima suscipit impedit omnis quis fugiat, doloribus fuga optio voluptatum enim.',
-          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur incidunt iure amet cumque delectus nulla officiis odio similique inventore. Similique quos debitis ea explicabo delectus corporis in unde quod quibusdam?'
+          '1 § Med samfällighetsförenings fordran på belopp, som vid uttaxering enligt lagen (1973:1150) om förvaltning av samfälligheter påförts någon såsom ägare av fastighet eller innehavare av tomrätt, som omfattas av samfälligheten, följer förmånsrätt enligt 6 § 1 eller 7 § 2 förmånsrättslagen (1970:979), om beloppet inte har förfallit till betalning tidigare än ett år före utmätning eller konkursansökan. Denna lag träder i kraft den 1 juli 2012. Äldre föreskrifter gäller fortfarande för fordran som innehas av en förening som förvaltar en exploateringssamfällighet enligt lagen (1987:11) om exploateringssamverkan. Lag (2012:185).',
         ],
         annotations: [
           {
