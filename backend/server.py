@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from models import Document
+from models import Topic
 from peewee import DoesNotExist
 from playhouse.shortcuts import model_to_dict
 
@@ -15,15 +15,15 @@ def docs():
             in model_to_dict(doc).items()
             if k in ['id', 'title']
             }
-        for doc in Document.select() 
+        for doc in Topic.select()
         ]})
 
 
-@app.route('/doc/<docid>')
-def doc(docid):
+@app.route('/doc/<topid>')
+def doc(topid):
     try:
         return jsonify({
-                'doc' : model_to_dict(Document.get_by_id(docid))
+                'doc' : model_to_dict(Topic.get_by_id(topid))
             })
     except DoesNotExist:
         return jsonify({
