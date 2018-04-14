@@ -1,8 +1,10 @@
 from flask import Flask
-from routes.docs import documents
+from routes.topics import topics_bp
+from routes.annotations import annotaions_bp
 
 app = Flask(__name__)
-app.register_blueprint(documents)
+app.register_blueprint(topics_bp)
+app.register_blueprint(annotaions_bp)
 
 # returns json with all docs
 if __name__ == '__main__':
