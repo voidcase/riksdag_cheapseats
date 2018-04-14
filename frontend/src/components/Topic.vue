@@ -81,7 +81,7 @@ export default {
       annos = _.map(annos, ann => {
         return {
           start_index: paragraphIndex === ann.start_paragraph ? ann.start_index : 0,
-          end_index: paragraphIndex === ann.end_paragraph ? ann.end_index : 0,
+          end_index: paragraphIndex === ann.end_paragraph ? ann.end_index : 1000,
           id: ann.annotation_id
         }
       })
@@ -102,23 +102,31 @@ export default {
     },
     mouseUp () {
       const selection = window.getSelection()
-      const firstWord = selection.anchorNode.parentElement
-      const lastWord = selection.focusNode.parentElement
-      console.log(firstWord)
+      const firstWord = selection.anchorNode.parentElement.attributes
+      const lastWord = selection.focusNode.parentElement.attributes
+      console.log(lastWord)
       this.selection = {
-        start_paragraph: parseInt(firstWord.getAttribute('paragraph')),
-        start_index: parseInt(firstWord.getAttribute('word_index')),
-        end_paragraph: parseInt(lastWord.getAttribute('paragraph')),
-        end_index: parseInt(lastWord.getAttribute('word_index'))
+        start_paragraph: parseInt(firstWord.getNamedItem('paragraph_index').value),
+        start_index: parseInt(firstWord.getNamedItem('word_index').value),
+        end_paragraph: parseInt(lastWord.getNamedItem('paragraph_index').value),
+        end_index: parseInt(lastWord.getNamedItem('word_index').value)
       }
-      console.log(this.selection)
+      if (window.getSelection().empty) {  // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {  // Firefox
+        window.getSelection().removeAllRanges();
+      }
     },
     wordIsSelected (paragraph, word) {
       if (!this.selection) return false
+      const start_index = paragraph === this.selection.start_paragraph 
+        ? this.selection.start_index : 0
+      const end_index = paragraph === this.selection.end_paragraph 
+        ? this.selection.end_index : 1000
       return paragraph >= this.selection.start_paragraph &&
         paragraph <= this.selection.end_paragraph &&
-        word >= this.selection.start_index &&
-        word <= this.selection.end_index
+        word >= start_index &&
+        word <= end_index
     }
   }
 }
@@ -194,7 +202,7 @@ export default {
       }
     }
     .selected {
-      background: mcolor('green', '200');
+      background: mcolor('green', '200') !important;
     }
   }
 }
