@@ -4,10 +4,10 @@ from peewee import DoesNotExist
 from playhouse.shortcuts import model_to_dict
 
 
-docs = Blueprint('docs', __name__)
+documents = Blueprint('docs', __name__)
 
 
-@app.route('/docs')
+@documents.route('/docs')
 def docs():
     return jsonify({'docs': [
         {
@@ -20,7 +20,7 @@ def docs():
         ]})
 
 
-@app.route('/doc/<docid>')
+@documents.route('/doc/<docid>')
 def doc(docid):
     try:
         return jsonify({

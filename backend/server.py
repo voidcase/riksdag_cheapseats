@@ -1,8 +1,8 @@
 from flask import Flask
-from routes import docs
+from routes.docs import documents
 
 app = Flask(__name__)
-app.register_blueprint(docs)
+app.register_blueprint(documents)
 
 # returns json with all docs
 if __name__ == '__main__':
