@@ -6,6 +6,5 @@ app = Flask(__name__)
 app.register_blueprint(topics_bp)
 app.register_blueprint(annotaions_bp)
 
-# returns json with all docs
 if __name__ == '__main__':
     app.run(debug=True)
