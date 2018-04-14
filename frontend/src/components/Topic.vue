@@ -26,11 +26,11 @@
     <div class="annotations" v-if="viewedAnnotations.length > 0">
       <ul>
         <li v-for="annotation in viewedAnnotations" :key="annotation.id">
-          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?</p>
+          <p>{{annotation.text}}</p>
           <div class="reactions-wrapper">
-            <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg"/>{{annotation.deltas}}</div>
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg" v-on:click="increment(annotation)"/>{{annotation.deltas}}</div>
             <div class="button-wrapper"><img class="lbutton" src="@/assets/annotations.svg"/>{{viewedAnnotations.length}}</div>
-            <div class="button-wrapper"><img class="lbutton" src="@/assets/surprised.svg"/>3</div>
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/surprised.svg" v-on:click=""/> {{ annotation.disputes }}</div>
           </div>
         </li>
       </ul>
@@ -38,7 +38,8 @@
     <hr  class="right-separator" v-if="selection && viewedAnnotations.length > 0" />
     <div class="add-annotation" v-if="selection">
       <h3>Lägg till annotering</h3>
-      <textarea name="annotation-text"></textarea>
+      <textarea name="annotation-text" v-model="message" id="annotation"></textarea>
+      <button class="submitButton" type="submit" v-on:click="submitAnnotation()">Submit</button>
     </div>
   </div>
 </template>
@@ -50,6 +51,7 @@ export default {
   name: 'Topic',
   data () {
     return {
+      message: '',
       title: 'Skolreform — Ett nytt betygsystem',
       author: 'Jonas Axelsson',
       text: {
@@ -65,7 +67,8 @@ export default {
             end_paragraph: 0,
             end_index: 7,
             deltas: 1,
-            disputes: 56
+            disputes: 56,
+            text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?"
           },
           {
             annotation_id: 1,
@@ -74,8 +77,9 @@ export default {
             end_paragraph: 0,
             end_index: 5,
             deltas: 4,
-            disputes: 6
-          }
+            disputes: 6,
+            text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?"
+            }
         ]
       },
       selection: null,
@@ -92,7 +96,8 @@ export default {
           end_index: paragraphIndex === ann.end_paragraph ? ann.end_index : 1000,
           id: ann.annotation_id,
           deltas: ann.deltas,
-          disputes: ann.disputes
+          disputes: ann.disputes,
+          text: ann.text
         }
       })
 
@@ -105,6 +110,9 @@ export default {
         }
       })
       return words
+    },
+    increment(annotation) {
+      annotation.deltas+=1
     },
     viewAnnotations (annotations) {
       this.viewedAnnotations = annotations
@@ -140,7 +148,24 @@ export default {
         paragraph <= this.selection.end_paragraph &&
         word >= startIndex &&
         word <= endIndex
+    },
+    submitAnnotation() {
+      var annotation = {
+        annotation_id: 1,
+        start_paragraph: this.selection.start_paragraph,
+        start_index: this.selection.start_index,
+        end_paragraph: this.selection.end_paragraph,
+        end_index: this.selection.end_index,
+        text: this.message,
+        deltas: 0,
+        disputes: 0
+      }
+
+      this.text.annotations.push(annotation)
+      document.getElementById("annotation").value = ""
+      this.message = ""
     }
+
   }
 }
 </script>
@@ -273,7 +298,6 @@ export default {
     font-weight: 400;
   }
 }
-
 .lbutton {
     width: 20px;
     height: 20px;
@@ -304,5 +328,79 @@ export default {
   display:flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+.submitButton {
+  border-radius: 500px;
+  font-weight: 500;
+  border: 2px solid #555;
+  padding: 0.75em 1.5em;
+  display: inline-block;
+  margin-right: 1em;
+  border: none;
+  background: #81c784;
+  color: #333;
+  text-decoration: none;
+  outline: none;
+  font-size: 1.17em;
+  font-family: 'Poppins', Helvetica, Arial, sans-serif;
+
+
+  transition: 0.05s linear;
+}
+
+.submitButton:focus {
+  outline: none;
+  cursor: pointer;
+
+}
+.submitButton:active {
+  transform: scale(0.8, 0.8);
+  outline: none;
+}
+ /* Du kan ta bort allt under detta. */
+body {
+  transition: 4s linear;
+}
+
+body:hover {
+  transform: rotate(80deg) translate(200px, 200px) scale(1.5, 1.5);
+  animation: blinka 4s linear infinite;
+}
+
+@keyframes blinka {
+  10% {
+    background-color: blue;
+    width: 70%;
+  }
+
+  20%{
+    background-color: green;
+    width: 100%;
+    transform: rotate(180deg);
+  }
+
+  40% {
+    background-color: black;
+    width:50%;
+  }
+
+  60% {
+    background-color: red;
+    width: 70%;
+    transform: rotate(310deg);
+
+  }
+
+  80% {
+    background-color: pink;
+    width: 100%;
+  }
+
+  100% {
+    background-color: white;
+    width: 80%;
+  }
+
 }
 </style>
