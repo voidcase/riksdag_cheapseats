@@ -1,19 +1,24 @@
 
 <template>
-  <div class="topic-container">
+  <div :class="{'topic-container': true, 'bleed': viewedAnnotations.length > 0}">
     <h1>{{title}}</h1>
     <div class="author">{{author}}</div>
     <div class="annotation-meta" v-if="viewedAnnotations.length > 0">
       {{viewedAnnotations.length}} {{viewedAnnotations.length == 1 ? 'Annotering' : 'Annoteringar'}}
     </div>
-    <div class="body-text">
+    <div class="body-text" v-on:mouseup="mouseUp">
       <p v-for="(paragraph, index) in text.paragraphs" :key="index">
         <span
         v-for="(word, word_number) in annotate(paragraph, index, text.annotations)"
         :key="word_number"
+        :word_index="word_number"
+        :paragraph_index="index"
         :annotations="word.annotations.join()"
         :annotations_count="word.annotations.length"
-        :class="{'annotated':word.annotations.length > 0}"
+        :class="{
+          'annotated': word.annotations.length > 0,
+          'selected': wordIsSelected(index, word_number)
+        }"
         v-on:click="viewAnnotations(word.annotations)">
           {{word.text}}
         </span>
@@ -60,6 +65,12 @@ export default {
           }
         ]
       },
+      selection: {
+        start_paragraph: 0,
+        start_index: 1,
+        end_paragraph: 0,
+        end_index: 4
+      },
       viewedAnnotations: []
     }
   },
@@ -88,6 +99,26 @@ export default {
     },
     viewAnnotations (annotations) {
       this.viewedAnnotations = annotations
+    },
+    mouseUp () {
+      const selection = window.getSelection()
+      const firstWord = selection.anchorNode.parentElement
+      const lastWord = selection.focusNode.parentElement
+      console.log(firstWord)
+      this.selection = {
+        start_paragraph: parseInt(firstWord.getAttribute('paragraph')),
+        start_index: parseInt(firstWord.getAttribute('word_index')),
+        end_paragraph: parseInt(lastWord.getAttribute('paragraph')),
+        end_index: parseInt(lastWord.getAttribute('word_index'))
+      }
+      console.log(this.selection)
+    },
+    wordIsSelected (paragraph, word) {
+      if (!this.selection) return false
+      return paragraph >= this.selection.start_paragraph &&
+        paragraph <= this.selection.end_paragraph &&
+        word >= this.selection.start_index &&
+        word <= this.selection.end_index
     }
   }
 }
@@ -97,17 +128,42 @@ export default {
 @import '@/styles/mixins/layout.scss';
 @import '@/styles/material/color.scss';
 
+@keyframes slide {
+  from {
+    transform: translateX(($bleed-width - $container-width)/2);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-reverse {
+  from {
+    transform: translateX(($container-width - $bleed-width)/2);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 .topic-container {
   @include contained();
   margin-top: 60px;
   display: grid;
-  grid-template-columns: 600px 1fr;
+  grid-template-columns: 800px 1fr;
   grid-column-gap: 2rem;
   & > * {
     grid-column: 1;
+    animation: slide-reverse 1s;
   }
   & > .annotations, & > .annotation-meta {
     grid-column: 2;
+  }
+  &.bleed {
+    @include contained_bleed();
+    & > * {
+      animation: slide 1s;
+    }
   }
 }
 
@@ -136,6 +192,9 @@ export default {
       &:hover {
         cursor: pointer;
       }
+    }
+    .selected {
+      background: mcolor('green', '200');
     }
   }
 }
