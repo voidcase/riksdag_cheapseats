@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 from sys import stderr
 import json
 
@@ -8,7 +8,11 @@ annotaions_bp = Blueprint('annotations', __name__)
 
 @annotaions_bp.route("/annotations/<topic_id>", methods=["POST"])
 def ins_ann(topic_id):
-    """Request Includes annotations and corresponding text."""
+    """
+    Request Includes annotations and corresponding text.
+
+    Should insert annotation.
+    """
     annotations_text = None
     try:
         annotations_text = json.loads(request.data)
@@ -17,12 +21,11 @@ def ins_ann(topic_id):
                       reason: {}".format(str(e)))
 
     """Do something with annotations."""
-    print(annotations_text)
-    return "Hi"
+    return Response("Hi", status=200, mimetype="text/plain")
 
 
 @annotaions_bp.route("/annotations/<topic_id>/<annotation_id>", methods=["POST"])
-def ins_com(topic_id, ann_id):
+def ins_com(topic_id, annotation_id):
     """Insert comment on annotation."""
     ann_comm = None
     try:
@@ -31,19 +34,19 @@ def ins_com(topic_id, ann_id):
         stderr.write("Unable to parse JSON request when attempting to \
                       add comment, reason: {}".format(str(e)))
 
-    print(ann_comm)
+    return Response("Hello", status=200, mimetype="text/plain")
 
 
 @annotaions_bp.route("/annotations/<topic_id>", methods=["GET"])
 def get_ann_meta(topic_id):
     """Return annotation meta data."""
-    return "Totally a annotation"
+    return Response("Totally a annotation", status=200, mimetype="text/plain")
 
 
 @annotaions_bp.route("/annotations/<topic_id>/<annotation_id>", methods=["GET"])
-def get_ann_text(topic_id, ann_id):
+def get_ann_text(topic_id, annotation_id):
     """Get text for annotation and comments."""
-    return "Totally text and comments"
+    return Response("Totally text and comments", status=200, mimetype="text/plain")
 
 
 
