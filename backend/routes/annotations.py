@@ -1,7 +1,7 @@
 from flask import Blueprint, request, Response
 from sys import stderr
 import json
-from models import Annotation
+from models import Annotation, Comment
 
 
 annotations_bp = Blueprint('annotations', __name__)
@@ -14,9 +14,15 @@ def ins_ann(topic_id):
 
     Should insert annotation.
     """
-    annotations_text = None
     try:
-        annotations_text = json.loads(request.data)
+        data = json.loads(request.data)
+        ann = Annotation.create(
+            parent=topic_id,
+            start_index=data['start_index'],
+            end_index=data['end_index'],
+            body=data['body'],
+            deltas=0)
+        ann.save()
     except json.JSONDecodeError as e:
         stderr.write("Unable to parse JSON request from /annotations/ \
                       reason: {}".format(str(e)))
@@ -25,12 +31,19 @@ def ins_ann(topic_id):
     return Response("Hi", status=200, mimetype="text/plain")
 
 
-@annotations_bp.route("/annotations/<topic_id>/<annotation_id>", methods=["POST"])
-def ins_com(topic_id, annotation_id):
+@annotations_bp.route("/annotations/comment/<annotation_id>", methods=["POST"])
+def ins_com(annotation_id):
     """Insert comment on annotation."""
     ann_comm = None
     try:
-        ann_comm = json.loads(request.data)
+        data = json.loads(request.data)
+        ann = Annotation.get_by_id(annotation_id)
+        comm = Comment(
+            parent=annotation_id,
+            body=data['comment'],
+            deltas = 0
+        )
+        comm.save()
     except json.JSONDecodeError as e:
         stderr.write("Unable to parse JSON request when attempting to \
                       add comment, reason: {}".format(str(e)))

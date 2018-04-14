@@ -2,6 +2,7 @@ import peewee as pw
 from playhouse.db_url import connect
 from os import environ
 import psycopg2 #token import because pipreqs
+import datetime
 
 db = connect(environ.get('DATABASE_URL') or 'sqlite:///test.db')
 
@@ -31,11 +32,13 @@ class Annotation(BaseModel):
     end_index = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
+    timestamp = pw.DateTimeField(default=datetime.datetime.now)
     deltas = pw.IntegerField()
 
 class Comment(BaseModel):
     # automagic id integer field
     parent = pw.ForeignKeyField(Annotation, backref='comments')
+    timestamp = pw.DateTimeField(default=datetime.datetime.now)
     body = pw.TextField()
     deltas = pw.IntegerField()
 
