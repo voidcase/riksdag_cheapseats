@@ -12,14 +12,11 @@ class BaseModel(pw.Model):
 
 class Topic(BaseModel):
     # automagic id integer field
-    title = pw.CharField(max_length=140)
     body = pw.TextField()
 
 
-class Motions(BaseModel):
-    title = pw.CharField(max_length=140)
-    body = pw.TextField()
-
+class Motions(Topic):
+    title = pw.TextField()
 
 class Debate(BaseModel):
     id = pw.CharField(primary_key=True)
@@ -54,7 +51,7 @@ class Comment(BaseModel):
     body = pw.TextField()
     deltas = pw.IntegerField(default=0)
 
-all_tables = [Topic, Debate, Speech, Annotation, Comment]
+all_tables = [Topic, Debate, Speech, Annotation, Comment, Motions]
 
 
 def reset():
