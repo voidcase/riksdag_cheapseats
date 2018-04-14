@@ -78,12 +78,7 @@ export default {
           }
         ]
       },
-      selection: {
-        start_paragraph: 0,
-        start_index: 1,
-        end_paragraph: 0,
-        end_index: 4
-      },
+      selection: null,
       viewedAnnotations: []
     }
   },
@@ -95,7 +90,9 @@ export default {
         return {
           start_index: paragraphIndex === ann.start_paragraph ? ann.start_index : 0,
           end_index: paragraphIndex === ann.end_paragraph ? ann.end_index : 1000,
-          id: ann.annotation_id
+          id: ann.annotation_id,
+          deltas: ann.deltas,
+          disputes: ann.disputes
         }
       })
 
