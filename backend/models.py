@@ -56,3 +56,5 @@ def reset_and_populate():
     t2 = Topic.create(title='SPIDERS!', body='AAAAAAAAAAAAAAAAAAAHHHHHHH!!!!!!!!!!!')
     a1 = Annotation.create(parent=t2, start_index=0, end_index=0, body='Daddy longlegs are not actually spiders', deltas=0)
     c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs', deltas=0)
+    s1 = Speech.create(person='Kim Jong Un', debate_id='XXX', nr=1, party='R', body='A frightened dog barks louder.')
+    d1 = Debate(title='Kim Jong Un vs Donald Trump', summary='Kim Jong un replies')
