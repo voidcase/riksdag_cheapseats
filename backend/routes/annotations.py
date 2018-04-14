@@ -1,9 +1,10 @@
 
-from flask import Blueprint, request, Response, abort
+from flask import Blueprint, request, Response, abort, jsonify
 from sys import stderr
 import json
 from models import Annotation, Comment
 from peewee import IntegrityError
+import peewee as pw
 from playhouse.shortcuts import model_to_dict
 
 
@@ -72,7 +73,7 @@ def mod_ann_delta(annotation_id, up_or_down):
             if ann.deltas > 0:
                 ann.deltas -= 1
         ann.save()
-    except DoesNotExist as e:
+    except pw.DoesNotExist as e:
         stderr.write("Unable to find annotation_id in db: {}").format(str(e))
     
     return Response("Yo", status=200, mimetype="text/plain")
@@ -84,16 +85,21 @@ def get_ann_meta(topic_id):
     annotations = Annotation.select().where(Annotation.parent == topic_id).order_by(Annotation.deltas)
     data = [model_to_dict(ann) for ann in annotations]
 
-    return Response(jsonify(data), status=200, mimetype="text/plain")
+    return jsonify(data)
 
 @annotations_bp.route("/annotations/<topic_id>/<annotation_id>", methods=["GET"])
 def get_ann_text(topic_id, annotation_id):
     """Get text for annotation and comments."""
+    data = ''
+    try:
+        annotations  = Annotation.select().where(Annotation.parent == topic_id and Annotation.id == annotation_id).order_by(Annotation.deltas)
+        data = [model_to_dict(ann) for ann in annotations][0]
+    except pw.DoesNotExist as e:
+        stderr.write("Unable to find topic_id or annotation_id in db: {}").format(str(e))
+    except IndexError:
+        stderr.write("Index out of bounds, that's embarressing")
 
-    annotations = Annotation.select().where(Annotation.parent == topic_id and Annotation.id == annotation_id).order_by(Annotation.deltas)
-    data = [model_to_dict(ann) for ann in annotations]
-
-    return Response("Totally text and comments", status=200, mimetype="text/plain")
+    return jsonify(data)
 
 
 
