@@ -12,14 +12,11 @@ class BaseModel(pw.Model):
 
 class Topic(BaseModel):
     # automagic id integer field
-    title = pw.CharField(max_length=140)
     body = pw.TextField()
 
 
-class Motions(BaseModel):
+class Motions(Topic):
     title = pw.TextField()
-    body = pw.TextField()
-
 
 class Debate(BaseModel):
     id = pw.CharField(primary_key=True)
@@ -89,16 +86,9 @@ def reset_and_populate():
 #     m3 = open("mock/m3", "r").read()
 #     m3t = open("mock/m3t", "r").read()
 
-<<<<<<< HEAD
-
-    Motions.create(title=m1t, body=m1)
-    Motions.create(title=m2t, body=m2)
-    Motions.create(title=m3t, body=m3)
-=======
 #     Motions.create(title=m1t, text=m1)
 #     Motions.create(title=m2t, text=m2)
 #     Motions.create(title=m3t, text=m3)
->>>>>>> 96b8b4ba626249791d9669669e4fa0511d4ea7e9
 
 
 
