@@ -16,7 +16,7 @@ class Topic(BaseModel):
 
 
 class Motions(BaseModel):
-    title = pw.CharField(max_length=140)
+    title = pw.TextField()
     body = pw.TextField()
 
 
@@ -51,7 +51,7 @@ class Comment(BaseModel):
     body = pw.TextField()
     deltas = pw.IntegerField()
 
-all_tables = [Topic, Debate, Speech, Annotation, Comment]
+all_tables = [Topic, Debate, Speech, Annotation, Comment, Motions]
 
 
 def reset():
@@ -77,9 +77,10 @@ def reset_and_populate():
     m3 = open("mock/m3", "r").read()
     m3t = open("mock/m3t", "r").read()
 
-    Motions.create(title=m1t, text=m1)
-    Motions.create(title=m2t, text=m2)
-    Motions.create(title=m3t, text=m3)
+
+    Motions.create(title=m1t, body=m1)
+    Motions.create(title=m2t, body=m2)
+    Motions.create(title=m3t, body=m3)
 
 
 
