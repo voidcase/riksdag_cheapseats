@@ -1,6 +1,7 @@
 import peewee as pw
 from playhouse.db_url import connect
 from os import environ
+import psycopg2 #token import because pipreqs
 
 db = connect(environ.get('DATABASE_URL') or 'sqlite:///test.db')
 
