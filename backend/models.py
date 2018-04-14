@@ -77,6 +77,8 @@ def reset_and_populate():
             body='Daddy longlegs are not actually spiders', 
             )
     c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs', deltas=0)
+    s1 = Speech.create(person='Kim Jong Un', debate_id='XXX', nr=1, party='R', body='A frightened dog barks louder.')
+    d1 = Debate(title='Kim Jong Un vs Donald Trump', summary='Kim Jong un replies')
 
 #     m1 = open("mock/m1", "r").read()
 #     m1t = open("mock/m1t", "r").read()

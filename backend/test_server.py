@@ -58,6 +58,16 @@ def test_put_ann_likes(tester, pop_db):
 
     assert Annotation.get_by_id(1).deltas == 1
 
+def test_get_speeches(tester, pop_db):
+    res = tester.get("/speeches/1/5")
+
+    assert res.status_code == 200
+
+def test_get_speech(tester, pop_db):
+    res = tester.get("/speech/1")
+
+    assert res.status_code == 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
