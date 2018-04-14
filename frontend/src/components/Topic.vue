@@ -1,6 +1,6 @@
 
 <template>
-  <div :class="{'topic-container': true, 'bleed': viewedAnnotations.length > 0}">
+  <div :class="{'topic-container': true, 'bleed': viewedAnnotations.length > 0 || this.selection}">
     <h1>{{title}}</h1>
     <div class="author">{{author}}</div>
     <div class="annotation-meta" v-if="viewedAnnotations.length > 0">
@@ -24,12 +24,17 @@
         </span>
       </p>
     </div>
-    <div class="annotations">
+    <div class="annotations" v-if="viewedAnnotations.length > 0">
       <ul>
         <li v-for="annotation in viewedAnnotations" :key="annotation.id">
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?</p>
         </li>
       </ul>
+    </div>
+    <hr  class="right-separator" v-if="selection && viewedAnnotations.length > 0" />
+    <div class="add-annotation" v-if="selection">
+      <h3>Lägg till annotering</h3>
+      <textarea name="annotation-text"></textarea>
     </div>
   </div>
 </template>
@@ -102,31 +107,35 @@ export default {
     },
     mouseUp () {
       const selection = window.getSelection()
-      const firstWord = selection.anchorNode.parentElement.attributes
-      const lastWord = selection.focusNode.parentElement.attributes
-      console.log(lastWord)
-      this.selection = {
-        start_paragraph: parseInt(firstWord.getNamedItem('paragraph_index').value),
-        start_index: parseInt(firstWord.getNamedItem('word_index').value),
-        end_paragraph: parseInt(lastWord.getNamedItem('paragraph_index').value),
-        end_index: parseInt(lastWord.getNamedItem('word_index').value)
+      const range = selection.getRangeAt(0)
+      if (range.startContainer !== range.endContainer || range.startOffset !== range.endOffset) {
+        const firstWord = selection.anchorNode.parentElement.attributes
+        const lastWord = selection.focusNode.parentElement.attributes
+        this.selection = {
+          start_paragraph: parseInt(firstWord.getNamedItem('paragraph_index').value),
+          start_index: parseInt(firstWord.getNamedItem('word_index').value),
+          end_paragraph: parseInt(lastWord.getNamedItem('paragraph_index').value),
+          end_index: parseInt(lastWord.getNamedItem('word_index').value)
+        }
+      } else {
+        this.selection = null
       }
-      if (window.getSelection().empty) {  // Chrome
-        window.getSelection().empty();
-      } else if (window.getSelection().removeAllRanges) {  // Firefox
-        window.getSelection().removeAllRanges();
+      if (window.getSelection().empty) {
+        window.getSelection().empty()
+      } else if (window.getSelection().removeAllRanges) {
+        window.getSelection().removeAllRanges()
       }
     },
     wordIsSelected (paragraph, word) {
       if (!this.selection) return false
-      const start_index = paragraph === this.selection.start_paragraph 
+      const startIndex = paragraph === this.selection.start_paragraph
         ? this.selection.start_index : 0
-      const end_index = paragraph === this.selection.end_paragraph 
+      const endIndex = paragraph === this.selection.end_paragraph
         ? this.selection.end_index : 1000
       return paragraph >= this.selection.start_paragraph &&
         paragraph <= this.selection.end_paragraph &&
-        word >= start_index &&
-        word <= end_index
+        word >= startIndex &&
+        word <= endIndex
     }
   }
 }
@@ -135,6 +144,15 @@ export default {
 <style lang="scss">
 @import '@/styles/mixins/layout.scss';
 @import '@/styles/material/color.scss';
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 @keyframes slide {
   from {
@@ -164,7 +182,7 @@ export default {
     grid-column: 1;
     animation: slide-reverse 1s;
   }
-  & > .annotations, & > .annotation-meta {
+  & > .annotations, & > .annotation-meta, & > .add-annotation {
     grid-column: 2;
   }
   &.bleed {
@@ -172,7 +190,20 @@ export default {
     & > * {
       animation: slide 1s;
     }
+    & > .annotations, & > .annotations-meta, & > .add-annotation {
+      animation: slide 1s, fadeIn 0.4s;
+    }
   }
+}
+
+.topic-container > .right-separator {
+  grid-column: 2;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid mcolor('yellow', '500');
+  width: 80%;
+  margin: 1rem auto;
+  display: block;
 }
 
 .annotation-meta {
@@ -191,6 +222,9 @@ export default {
     color: #445566
   }
   p {
+    ::selection {
+      background: mcolor('green', '100');
+    }
     line-height: 1.9em;
     .annotated {
       background: mcolor('yellow', '100');
@@ -214,6 +248,25 @@ export default {
     padding-left: 1rem;
     margin-bottom: 1.5rem;
     border-left: 3px solid mcolor('blue', '200');
+  }
+}
+
+.add-annotation {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-left: 3px solid mcolor('green', '300');
+  h3 {
+    font-weight: 300;
+  }
+  textarea {
+    width: 100%;
+    min-height: 150px;
+    font-family: "Poppins";
+    padding: 1rem;
+    color: #333;
+    font-weight: 400;
   }
 }
 
