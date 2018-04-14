@@ -17,7 +17,7 @@ class Debate(BaseModel):
     title = pw.CharField(max_length=140)
     summary = pw.TextField()
 
-class Speech(Document):
+class Speech(Topic):
     person = pw.CharField(max_length=140)
     debate_id = pw.ForeignKeyField(Debate)
     nr = pw.IntegerField()
