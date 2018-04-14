@@ -27,6 +27,7 @@ def main():
         except:
             pass
 
+
 def anforande(doc, id):
     r = requests.get('http://data.riksdagen.se/anforande/' + doc + '-' + id)
     root = ET.fromstring(r.text)
@@ -39,6 +40,7 @@ def anforande(doc, id):
     }
     return anf
     
+
 def debatt():
     debate_id = 'H50996'
     r = requests.get('http://data.riksdagen.se/dokument/' + debate_id + '.html')
@@ -98,6 +100,7 @@ def parse_text(text):
     result = re.sub('<span[^<]+>', '', result)
     # return list(map(lambda s: str(s)[6:-7], paragraphs)) # remove <span>...</span>
     return result
+
 
 if __name__ == "__main__":
     main()
