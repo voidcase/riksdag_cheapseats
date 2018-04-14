@@ -1,8 +1,10 @@
+
 from flask import Blueprint, request, Response, abort
 from sys import stderr
 import json
 from models import Annotation, Comment
 from peewee import IntegrityError
+from playhouse.shortcuts import model_to_dict
 
 
 annotations_bp = Blueprint('annotations', __name__)
@@ -24,6 +26,8 @@ def ins_ann(topic_id):
             parent=topic_id,
             start_index=data['start_index'],
             end_index=data['end_index'],
+            start_paragraph=data['start_paragraph'],
+            end_paragraph=data['end_paragraph'],
             body=data['body'],
             deltas=0)
         ann.save()
@@ -31,6 +35,7 @@ def ins_ann(topic_id):
         stderr.write("Unable to parse JSON request from /annotations/ \
                       reason: {}".format(str(e)))
     except IntegrityError as e:
+        stderr.write("Integrity error when inserting annotation: {}".format(str(e)))
         abort(400)
 
     """Do something with annotations."""
@@ -75,11 +80,19 @@ def mod_ann_delta(annotation_id, up_or_down):
 @annotations_bp.route("/annotations/<topic_id>", methods=["GET"])
 def get_ann_meta(topic_id):
     """Return annotation meta data."""
-    return Response("Totally a annotation", status=200, mimetype="text/plain")
+
+    annotations = Annotation.select().where(Annotation.parent == topic_id).order_by(Annotation.deltas)
+    data = [model_to_dict(ann) for ann in annotations]
+
+    return Response(jsonify(data), status=200, mimetype="text/plain")
 
 @annotations_bp.route("/annotations/<topic_id>/<annotation_id>", methods=["GET"])
 def get_ann_text(topic_id, annotation_id):
     """Get text for annotation and comments."""
+
+    annotations = Annotation.select().where(Annotation.parent == topic_id and Annotation.id == annotation_id).order_by(Annotation.deltas)
+    data = [model_to_dict(ann) for ann in annotations]
+
     return Response("Totally text and comments", status=200, mimetype="text/plain")
 
 

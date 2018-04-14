@@ -9,5 +9,8 @@ app.register_blueprint(topics_bp)
 app.register_blueprint(annotations_bp)
 app.register_blueprint(debate_bp)
 
+from models import reset_and_populate
+reset_and_populate()
+
 if __name__ == '__main__':
     app.run(debug=True)

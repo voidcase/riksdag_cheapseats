@@ -2,7 +2,6 @@ from server import app
 import pytest
 import json
 
-
 @pytest.fixture
 def tester():
     return app.test_client()
@@ -43,13 +42,11 @@ def test_ins_com(tester, pop_db):
 
 def test_get_ann_meta(tester, pop_db):
     res = tester.get("/annotations/1")
-
     assert res.status_code == 200
 
 
 def test_get_ann_text(tester, pop_db):
     res = tester.get("/annotations/1/1")
-
     assert res.status_code == 200
 
 def test_put_ann_likes(tester, pop_db):
