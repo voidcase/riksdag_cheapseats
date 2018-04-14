@@ -5,14 +5,13 @@ import peewee as pw
 from playhouse.db_url import connect
 from os import environ
 
-from backend.models import Document, Debate, Speech
+from backend.models import Debate, Speech
 
 def main():
     db = connect(environ.get('DATABASE_URL') or 'sqlite:///test.db')
     meta, data = debatt()
     db.create_tables([Debate, Speech])
     debate = Debate.create(id=meta['id'], title=meta['title'], summary=meta['summary'])
-    print(meta)
     debate.save()
     for anf in data:
         try:
@@ -76,8 +75,10 @@ def debatt():
             print(p)
         text = ""
         next_text = speech.next_sibling
-        while '<h2>' not in next_text:
+        while True:
             if type(next_text) == Tag:
+                if '<h2>' in next_text.prettify():
+                    break
                 text += next_text.prettify()
             next_text = next_text.next_sibling
             if not next_text:
