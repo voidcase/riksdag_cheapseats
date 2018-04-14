@@ -2,7 +2,7 @@
   <div id="app">
     <div id="top-bar">
       <div class="left">
-        <h1><span>Riksdagen &mdash; Cheap Seats</span></h1>
+        <h1><span>Riksdagen &mdash; Delta</span></h1>
       </div>
       <div class="right">
         <div class="logo-container">

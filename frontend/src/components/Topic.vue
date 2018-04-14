@@ -358,7 +358,7 @@ export default {
   transform: scale(0.8, 0.8);
   outline: none;
 }
- /* Du kan ta bort allt under detta. */
+/*
 body {
   transition: 4s linear;
 }
@@ -403,4 +403,6 @@ body:hover {
   }
 
 }
+*/
+
 </style>
