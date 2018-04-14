@@ -6,9 +6,10 @@
     <p>
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia ipsam tempora corrupti ea harum fugit at nihil, odio nulla earum laudantium in natus doloribus maxime vitae a praesentium similique suscipit
     </p>
-    <div>
+    <div class="buttons">
       <router-link to="/doc/1" class="button primary">Läs mer</router-link>
       <router-link to="/doc/2" class="button secondary">Relaterade</router-link>
+      <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg"/></div>
     </div>
   </div>
 </template>
@@ -46,6 +47,31 @@ export default {
     &.secondary {
       @include button-secondary();
     }
+  }
+  .lbutton {
+      width: 40px;
+      height: 40px;
+      background-color: #dddddd;
+      border-radius: 20%;
+      transition: 0.05s linear;
+  }
+
+  .lbutton:hover {
+    opacity: 0.9;
+    cursor: pointer;
+  }
+
+  .lbutton:active {
+    transform: scale(0.8, 0.8);
+  }
+
+  .button-wrapper {
+    width: 50px;
+  }
+
+  .buttons {
+    display:flex;
+    flex-direction: row;
   }
 }
 
