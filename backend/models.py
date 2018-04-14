@@ -18,3 +18,7 @@ class Annotation(BaseModel):
     end_index = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
+
+class Comment(BaseModel):
+    annotation = pw.ForeignKeyField(Annotation, backref='comments')
+    body = pw.TextField()
