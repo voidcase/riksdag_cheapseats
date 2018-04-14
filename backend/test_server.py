@@ -51,5 +51,12 @@ def test_get_ann_text(tester, pop_db):
 
     assert res.status_code == 200
 
+def test_put_ann_likes(tester, pop_db):
+    from models import Annotation
+    res = tester.post("/annotations/delta/1/true")
+
+    assert Annotation.get_by_id(1).deltas == 1
+
+
 if __name__ == '__main__':
     app.run(debug=True)
