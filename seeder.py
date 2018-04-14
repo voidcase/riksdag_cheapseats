@@ -12,6 +12,7 @@ def main():
     meta, data = debatt()
     db.create_tables([Debate, Speech])
     debate = Debate.create(id=meta['id'], title=meta['title'], summary=meta['summary'])
+    print(meta)
     debate.save()
     for anf in data:
         try:
@@ -49,12 +50,14 @@ def debatt():
     first = speeches[0]
     prev_text = first.previous_sibling
     summary = ""
-    while '<h1>' not in prev_text:
+    while True:
         if type(prev_text) == Tag:
+            if '<h1>' in prev_text.prettify():
+                break
             summary += prev_text.prettify()
         prev_text = prev_text.previous_sibling
         if not prev_text:
-            break
+            break 
     title = ''
     if prev_text:
         title = prev_text.findChildren()[7].string
