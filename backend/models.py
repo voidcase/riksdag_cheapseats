@@ -24,7 +24,6 @@ class Speech(Topic):
     debate_id = pw.ForeignKeyField(Debate)
     nr = pw.IntegerField()
     party = pw.CharField(max_length=4)
-    title = pw.CharField(80)
     body = pw.TextField()
 
 class Annotation(BaseModel):

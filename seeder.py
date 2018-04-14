@@ -4,15 +4,15 @@ from bs4 import BeautifulSoup, Tag
 import peewee as pw
 from playhouse.db_url import connect
 from os import environ
+import re
 
-from backend.models import Document, Debate, Speech
+from backend.models import Debate, Speech
 
 def main():
     db = connect(environ.get('DATABASE_URL') or 'sqlite:///test.db')
     meta, data = debatt()
     db.create_tables([Debate, Speech])
     debate = Debate.create(id=meta['id'], title=meta['title'], summary=meta['summary'])
-    print(meta)
     debate.save()
     for anf in data:
         try:
@@ -76,15 +76,28 @@ def debatt():
             print(p)
         text = ""
         next_text = speech.next_sibling
-        while '<h2>' not in next_text:
+        while True:
             if type(next_text) == Tag:
+                if '<h2>' in next_text.prettify():
+                    break
                 text += next_text.prettify()
             next_text = next_text.next_sibling
             if not next_text:
                 break
-        anf['data'] = text
+        anf['data'] = parse_text(text)
         anforanden.append(anf)
     return debatt, anforanden
+
+def parse_text(text):
+    s = BeautifulSoup(text, 'html.parser')
+    childs = s.findChildren()
+    paragraphs = [str(childs[i].prettify()) for i in range(len(childs)) if i % 2 == 1]
+    result = ''.join(paragraphs)
+    result = result.replace('<span>', '<p>')
+    result = result.replace('</span>', '</p>')
+    result = re.sub('<span[^<]+>', '', result)
+    # return list(map(lambda s: str(s)[6:-7], paragraphs)) # remove <span>...</span>
+    return result
 
 if __name__ == "__main__":
     main()
