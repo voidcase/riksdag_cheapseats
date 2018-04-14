@@ -1,1 +1,4 @@
 *.db
+backend/.pytest_cache/
+backend/__pycache__/
+*.pyc

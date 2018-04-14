@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from models import Document
+from peewee import DoesNotExist
 from playhouse.shortcuts import model_to_dict
 
 app = Flask(__name__)
@@ -16,3 +17,18 @@ def docs():
             }
         for doc in Document.select() 
         ]})
+
+
+@app.route('/doc/<docid>')
+def doc(docid):
+    try:
+        return jsonify({
+                'doc' : model_to_dict(Document.get_by_id(docid))
+            })
+    except DoesNotExist:
+        return jsonify({
+                'error' : 'doc does not exist'
+            })
+
+if __name__ == '__main__':
+    app.run(debug=True)
