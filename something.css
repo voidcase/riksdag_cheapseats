@@ -1,0 +1,10 @@
+.lbutton {
+    width: 100px;
+    height: 50px;
+    background-color: #f7beff6e;
+    background-image: image("logo300x300.png");
+}
+
+.lbutton:hover {
+  opacity: 0.5;
+}
