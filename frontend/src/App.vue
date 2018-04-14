@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="top-bar">
-      <h1>Riksdagen &mdash; Cheap Seats</h1>
+      <h1><span>Riksdagen &mdash; Cheap Seats</span></h1>
     </div>
     <router-view/>
   </div>
@@ -37,6 +37,9 @@ body {
   border-bottom: 12px solid mcolor('yellow', '300');
   h1 {
     margin: 0;
+    span {
+      border-bottom: 5px solid mcolor('yellow', '200')
+    }
   }
 }
 </style>

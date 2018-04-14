@@ -1,19 +1,37 @@
 
 <template>
   <div class="topic-container">
-    <div class="root-content">
-      <h1>{{title}}</h1>
-      <div class="author">{{author}}</div>
-      <div class="body-text">
-        <p v-for="(paragraph, index) in text.paragraphs" :key="index">
-          {{ paragraph }}
-        </p>
-      </div>
+    <h1>{{title}}</h1>
+    <div class="author">{{author}}</div>
+    <div class="annotation-meta" v-if="viewedAnnotations.length > 0">
+      {{viewedAnnotations.length}} {{viewedAnnotations.length == 1 ? 'Annotering' : 'Annoteringar'}}
+    </div>
+    <div class="body-text">
+      <p v-for="(paragraph, index) in text.paragraphs" :key="index">
+        <span
+        v-for="(word, word_number) in annotate(paragraph, index, text.annotations)"
+        :key="word_number"
+        :annotations="word.annotations.join()"
+        :annotations_count="word.annotations.length"
+        :class="{'annotated':word.annotations.length > 0}"
+        v-on:click="viewAnnotations(word.annotations)">
+          {{word.text}}
+        </span>
+      </p>
+    </div>
+    <div class="annotations">
+      <ul>
+        <li v-for="annotation in viewedAnnotations" :key="annotation.id">
+          <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   name: 'Topic',
   data () {
@@ -22,10 +40,54 @@ export default {
       author: 'Jonas Axelsson',
       text: {
         paragraphs: [
-          'lorem ipsum dolor sit amet.',
-          'Mi septo kira nime.'
+          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, provident ab sequi id delectus fugit temporibus quaerat minus praesentium, minima suscipit impedit omnis quis fugiat, doloribus fuga optio voluptatum enim.',
+          'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur incidunt iure amet cumque delectus nulla officiis odio similique inventore. Similique quos debitis ea explicabo delectus corporis in unde quod quibusdam?'
+        ],
+        annotations: [
+          {
+            annotation_id: 0,
+            start_paragraph: 0,
+            start_index: 4,
+            end_paragraph: 0,
+            end_index: 7
+          },
+          {
+            annotation_id: 1,
+            start_paragraph: 0,
+            start_index: 5,
+            end_paragraph: 0,
+            end_index: 5
+          }
         ]
-      }
+      },
+      viewedAnnotations: []
+    }
+  },
+  methods: {
+    annotate (text, paragraphIndex, annotations) {
+      let annos = _.filter(annotations, ann => paragraphIndex >= ann.start_paragraph &&
+      paragraphIndex <= ann.end_paragraph)
+      annos = _.map(annos, ann => {
+        return {
+          start_index: paragraphIndex === ann.start_paragraph ? ann.start_index : 0,
+          end_index: paragraphIndex === ann.end_paragraph ? ann.end_index : 0,
+          id: ann.annotation_id
+        }
+      })
+
+      let words = _.split(text, ' ')
+      words = _.map(words, (word, index) => {
+        let annotationsForWord = _.filter(annos, ann => index >= ann.start_index && index <= ann.end_index)
+        annotationsForWord = _.map(annotationsForWord, ann => ann.id)
+        return {
+          text: word,
+          annotations: annotationsForWord
+        }
+      })
+      return words
+    },
+    viewAnnotations (annotations) {
+      this.viewedAnnotations = annotations
     }
   }
 }
@@ -33,13 +95,29 @@ export default {
 
 <style lang="scss">
 @import '@/styles/mixins/layout.scss';
+@import '@/styles/material/color.scss';
 
 .topic-container {
-  margin-top: 60px;
   @include contained();
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 600px 1fr;
+  grid-column-gap: 2rem;
+  & > * {
+    grid-column: 1;
+  }
+  & > .annotations, & > .annotation-meta {
+    grid-column: 2;
+  }
 }
 
-.root-content {
+.annotation-meta {
+  font-size: 1.2rem;
+  font-weight: 300;
+  padding-left: 1rem;
+}
+
+.topic-container {
   h1 {
     margin-bottom: 0;
   }
@@ -47,6 +125,28 @@ export default {
     font-weight: 300;
     font-size: 1.3rem;
     color: #445566
+  }
+  p {
+    line-height: 1.9em;
+    .annotated {
+      background: mcolor('yellow', '100');
+      &[annotations_count="2"] {
+        background: mcolor('blue', '200');
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.annotations ul {
+  list-style: none;
+  padding: 0;
+  li {
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid mcolor('blue', '200');
   }
 }
 
