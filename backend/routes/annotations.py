@@ -34,7 +34,6 @@ def ins_com(topic_id, ann_id):
     print(ann_comm)
 
 
-
 @annotaions_bp.route("/annotations/<topic_id>", methods=["GET"])
 def get_ann_meta(topic_id):
     """Return annotation meta data."""
