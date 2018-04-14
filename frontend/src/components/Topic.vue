@@ -1,4 +1,3 @@
-
 <template>
   <div :class="{'topic-container': true, 'bleed': viewedAnnotations.length > 0 || this.selection}">
     <h1>{{title}}</h1>
@@ -28,6 +27,11 @@
       <ul>
         <li v-for="annotation in viewedAnnotations" :key="annotation.id">
           <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?</p>
+          <div class="reactions-wrapper">
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg"/>{{annotation.deltas}}</div>
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/annotations.svg"/>{{viewedAnnotations.length}}</div>
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/surprised.svg"/>3</div>
+          </div>
         </li>
       </ul>
     </div>
@@ -59,14 +63,18 @@ export default {
             start_paragraph: 0,
             start_index: 4,
             end_paragraph: 0,
-            end_index: 7
+            end_index: 7,
+            deltas: 1,
+            disputes: 56
           },
           {
             annotation_id: 1,
             start_paragraph: 0,
             start_index: 5,
             end_paragraph: 0,
-            end_index: 5
+            end_index: 5,
+            deltas: 4,
+            disputes: 6
           }
         ]
       },
@@ -94,7 +102,6 @@ export default {
       let words = _.split(text, ' ')
       words = _.map(words, (word, index) => {
         let annotationsForWord = _.filter(annos, ann => index >= ann.start_index && index <= ann.end_index)
-        annotationsForWord = _.map(annotationsForWord, ann => ann.id)
         return {
           text: word,
           annotations: annotationsForWord
@@ -270,4 +277,35 @@ export default {
   }
 }
 
+.lbutton {
+    width: 20px;
+    height: 20px;
+    background-color: #dddddd;
+    border-radius: 20%;
+    transition: 0.05s linear;
+    vertical-align: text-bottom;
+    opacity:0.8;
+}
+
+.lbutton:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.lbutton:active {
+  transform: scale(0.8, 0.8);
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 60px;
+}
+
+.reactions-wrapper {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 </style>

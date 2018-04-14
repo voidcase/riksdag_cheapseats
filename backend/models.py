@@ -2,6 +2,7 @@ import peewee as pw
 from playhouse.db_url import connect
 from os import environ
 import psycopg2 #token import because pipreqs
+import datetime
 
 db = connect(environ.get('DATABASE_URL') or 'sqlite:///test.db')
 
@@ -31,11 +32,15 @@ class Annotation(BaseModel):
     end_index = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
+    timestamp = pw.DateTimeField(default=datetime.datetime.now)
+    deltas = pw.IntegerField()
 
 class Comment(BaseModel):
     # automagic id integer field
     parent = pw.ForeignKeyField(Annotation, backref='comments')
+    timestamp = pw.DateTimeField(default=datetime.datetime.now)
     body = pw.TextField()
+    deltas = pw.IntegerField()
 
 all_tables = [Topic, Debate, Speech, Annotation, Comment]
 
@@ -49,5 +54,5 @@ def reset_and_populate():
     db.create_tables(all_tables)
     t1 = Topic.create(title='Dont drink water', body='Fish fuck in it.')
     t2 = Topic.create(title='SPIDERS!', body='AAAAAAAAAAAAAAAAAAAHHHHHHH!!!!!!!!!!!')
-    a1 = Annotation.create(parent=t2, start_index=0, end_index=0, body='Daddy longlegs are not actually spiders')
-    c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs')
+    a1 = Annotation.create(parent=t2, start_index=0, end_index=0, body='Daddy longlegs are not actually spiders', deltas=0)
+    c1 = Comment.create(parent=a1, body='They never mentioned Daddy Longlegs', deltas=0)
