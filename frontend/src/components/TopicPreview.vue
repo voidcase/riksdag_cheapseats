@@ -8,9 +8,7 @@
     </p>
     <div class="buttons">
       <router-link to="/doc/1" class="button primary">Läs mer</router-link>
-      <router-link to="/doc/2" class="button secondary">Relaterade</router-link>
-      <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg"/></div>
-    </div>
+      <router-link to="/doc/2" class="button secondary">Relaterade</router-link>    </div>
   </div>
 </template>
 
@@ -49,8 +47,8 @@ export default {
     }
   }
   .lbutton {
-      width: 40px;
-      height: 40px;
+      width: 20px;
+      height: 20px;
       background-color: #dddddd;
       border-radius: 20%;
       transition: 0.05s linear;
