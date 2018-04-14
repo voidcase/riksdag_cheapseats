@@ -11,6 +11,7 @@ class BaseModel(pw.Model):
 
 class Topic(BaseModel):
     # automagic id integer field
+    title = pw.CharField(max_length=140)
     body = pw.TextField()
 
 class Debate(BaseModel):
@@ -30,6 +31,8 @@ class Annotation(BaseModel):
     # automagic id integer field
     start_index = pw.IntegerField()
     end_index = pw.IntegerField()
+    start_paragraph = pw.IntegerField()
+    end_paragraph = pw.IntegerField()
     body = pw.TextField()
     parent = pw.ForeignKeyField(Topic, backref='annotations')
 
