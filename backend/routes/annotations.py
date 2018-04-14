@@ -24,6 +24,8 @@ def ins_ann(topic_id):
             parent=topic_id,
             start_index=data['start_index'],
             end_index=data['end_index'],
+            start_paragraph=data['start_paragraph'],
+            end_paragraph=data['end_paragraph'],
             body=data['body'],
             deltas=0)
         ann.save()
@@ -31,6 +33,7 @@ def ins_ann(topic_id):
         stderr.write("Unable to parse JSON request from /annotations/ \
                       reason: {}".format(str(e)))
     except IntegrityError as e:
+        stderr.write("Integrity error when inserting annotation: {}".format(str(e)))
         abort(400)
 
     """Do something with annotations."""
