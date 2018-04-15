@@ -2,6 +2,8 @@
 
 Annotation based discussion platform. Citizen can comment, ask question and dispute motions and transcripts directly from the parliament. This gives more context than a regular comment field, and makes it easier for people to understand difficult documents.
 
+Repository for summary API: https://github.com/funrep/summerizer
+
 ## Setup
 
 Backend:
