@@ -30,7 +30,7 @@
           <div class="reactions-wrapper">
             <div class="button-wrapper"><img class="lbutton" src="@/assets/bluedelta.svg" v-on:click="increment(annotation)"/>{{annotation.deltas}}</div>
             <div class="button-wrapper"><img class="lbutton" src="@/assets/annotations.svg"/>{{viewedAnnotations.length}}</div>
-            <div class="button-wrapper"><img class="lbutton" src="@/assets/surprised.svg" v-on:click=""/> {{ annotation.disputes }}</div>
+            <div class="button-wrapper"><img class="lbutton" src="@/assets/surprised.svg"/> {{ annotation.disputes }}</div>
           </div>
         </li>
       </ul>
@@ -56,7 +56,7 @@ export default {
       author: 'Jonas Axelsson',
       text: {
         paragraphs: [
-          '1 § Med samfällighetsförenings fordran på belopp, som vid uttaxering enligt lagen (1973:1150) om förvaltning av samfälligheter påförts någon såsom ägare av fastighet eller innehavare av tomrätt, som omfattas av samfälligheten, följer förmånsrätt enligt 6 § 1 eller 7 § 2 förmånsrättslagen (1970:979), om beloppet inte har förfallit till betalning tidigare än ett år före utmätning eller konkursansökan. Denna lag träder i kraft den 1 juli 2012. Äldre föreskrifter gäller fortfarande för fordran som innehas av en förening som förvaltar en exploateringssamfällighet enligt lagen (1987:11) om exploateringssamverkan. Lag (2012:185).',
+          '1 § Med samfällighetsförenings fordran på belopp, som vid uttaxering enligt lagen (1973:1150) om förvaltning av samfälligheter påförts någon såsom ägare av fastighet eller innehavare av tomrätt, som omfattas av samfälligheten, följer förmånsrätt enligt 6 § 1 eller 7 § 2 förmånsrättslagen (1970:979), om beloppet inte har förfallit till betalning tidigare än ett år före utmätning eller konkursansökan. Denna lag träder i kraft den 1 juli 2012. Äldre föreskrifter gäller fortfarande för fordran som innehas av en förening som förvaltar en exploateringssamfällighet enligt lagen (1987:11) om exploateringssamverkan. Lag (2012:185).'
         ],
         annotations: [
           {
@@ -67,7 +67,7 @@ export default {
             end_index: 7,
             deltas: 1,
             disputes: 56,
-            text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?"
+            text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?'
           },
           {
             annotation_id: 1,
@@ -77,8 +77,8 @@ export default {
             end_index: 5,
             deltas: 4,
             disputes: 6,
-            text: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?"
-            }
+            text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse corrupti architecto dignissimos vitae consectetur natus tempore voluptatem quidem at debitis! Dignissimos, vero molestias neque debitis dolor animi excepturi consequatur optio?'
+          }
         ]
       },
       selection: null,
@@ -110,8 +110,8 @@ export default {
       })
       return words
     },
-    increment(annotation) {
-      annotation.deltas+=1
+    increment (annotation) {
+      annotation.deltas += 1
     },
     viewAnnotations (annotations) {
       this.viewedAnnotations = annotations
@@ -148,7 +148,7 @@ export default {
         word >= startIndex &&
         word <= endIndex
     },
-    submitAnnotation() {
+    submitAnnotation () {
       var annotation = {
         annotation_id: 1,
         start_paragraph: this.selection.start_paragraph,
@@ -161,8 +161,8 @@ export default {
       }
 
       this.text.annotations.push(annotation)
-      document.getElementById("annotation").value = ""
-      this.message = ""
+      document.getElementById('annotation').value = ''
+      this.message = ''
     }
 
   }
@@ -343,7 +343,6 @@ export default {
   outline: none;
   font-size: 1.17em;
   font-family: 'Poppins', Helvetica, Arial, sans-serif;
-
 
   transition: 0.05s linear;
 }
